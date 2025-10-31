@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醫療機構疫災應變桌上演習觀摩報告</title>
+    <style>
+        /* 基礎樣式 */
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        
+        /* HEADER 樣式 - 漸層背景、邊框與圓角 */
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); 
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 12px; 
+            border: 2px solid rgba(255, 255, 255, 0.5); 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        }
+        header h1 { 
+            font-size: 28px; 
+            margin-bottom: 5px; 
+            margin-top: 5px; 
+        } 
+        header p { 
+            font-size: 16px; 
+            margin-top: 0; 
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 { font-size: 20px; color: #333; margin-top: 20px; }
+        p, ul, table { margin-bottom: 15px; }
+        ul { list-style-type: disc; padding-left: 25px; }
+        
+        /* 主要內容區塊 */
+        .section-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* 觀摩院模式 (對比點) - 淺黃色邊線 */
+        .contrast-point {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        /* 弊病/關鍵點 - 淺紅色邊線 */
+        .critical-point {
+            background-color: #f8d7da; 
+            border-left: 5px solid #dc3545; 
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        /* --- 懸停展開功能 (Hover Collapsible) 修正 --- */
+        .collapsible {
+            cursor: pointer;
+            padding: 12px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #e9ecef;
+            color: #495057;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            /* 設置相對定位，以便懸停容器包含內容 */
+            position: relative; 
+            z-index: 2; /* 確保按鈕在內容上層 */
+        }
+        .collapsible:hover { background-color: #d1d8df; }
+
+        .collapsible:after {
+            content: '\002B'; /* Plus sign (初始收合) */
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+        
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            background-color: #f1f1f1;
+            border-radius: 0 0 4px 4px;
+            /* 將 content 放在按鈕下方，使用負邊距讓它們視覺上連接 */
+            margin-top: -15px;
+            padding-top: 15px; 
+            z-index: 1;
+        }
+
+        /* **核心修改：當滑鼠懸停在按鈕或內容上時，展開內容** */
+        /* 1. 懸停在按鈕上時展開 */
+        .collapsible:hover + .content {
+            /* 展開內容 */
+            max-height: 900px; /* 給予足夠大的高度確保內容完全展開 */
+            overflow: visible; /* 確保內容在展開後可見 */
+        }
+        /* 2. 懸停在內容本身時保持展開 (提供更好的使用者體驗) */
+        .content:hover {
+            max-height: 900px;
+            overflow: visible;
+        }
+        /* 懸停時，按鈕圖標變為 Minus sign */
+        .collapsible:hover:after {
+            content: "\2212"; /* Minus sign */
+        }
+        /* --- 懸停展開功能 (Hover Collapsible) 修正結束 --- */
+        
+        /* 行動方案進度追蹤器 */
+        #progress-container {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff8e1;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        #progress-bar {
+            width: 100%;
+            height: 25px;
+            margin-top: 10px;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            list-style: none;
+            padding-left: 0;
+            font-size: 16px;
+        }
+        .action-item input[type="checkbox"] {
+            margin-right: 15px;
+            margin-top: 5px;
+            min-width: 20px;
+            min-height: 20px;
+            cursor: pointer;
+        }
+        .action-item label {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        /* FOOTER 圖片區樣式 (已對齊內容) */
+        .image-footer {
+            text-align: center;
+            max-width: 900px; 
+            margin: 40px auto 20px auto; 
+            padding: 0; 
+            background-color: #ffffff; 
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .image-footer img {
+            max-width: 100%; 
+            width: 100%; 
+            height: auto;
+            border-radius: 8px; 
+            margin: 0; 
+            display: block; 
+        }
+        .image-footer h3 {
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding: 0 20px; 
+        }
+
+    </style>
+</head>
+<body>
+    <header>    
+	<h1>🏥 醫療機構疫災應變桌上演習觀摩報告<br>高雄醫學大學<br>2025/10/29</h1>
+       
+    </header>
+
+    <div class="section-content">
+        <h2>一、教育訓練目的</h2>
+        <h3>跨院觀摩交流醫院重大傳染病事件之因應</h3>
+        <h2>二、教育訓練過程、教育訓練機構、研究環境、簡介等等</h2>
+        <ul>
+            <li><strong>訓練機構：</strong> 高雄醫學大學疫災應變桌上演習觀摩。</li>
+            <li><strong>主題：</strong> 醫院重大傳染病事件之應變指揮、流程銜接與跨部門協調機制。</li>
+            <li><strong>訓練過程：</strong> 該院會議運作，以麻疹不同疫情情境進行各單位之桌上演習示範。</li>
+        </ul>
+
+        <button class="collapsible">📚 三、學習成果、心得 </button>
+        <div class="content">
+
+            <h3>高雄醫學院桌上演習模式與本院的實務差異 </h3>
+            <div class="contrast-point">
+                <p><strong>觀摩院的模式：</strong> 主辦單位(感染管制中心/計畫部)應該是先有透過<strong>簡易精要的圖示</strong>清晰解說，包括：整合疫情分級及其操作型定義、動員層級與總體因應作為，讓所有參與人員在演習前有清晰的全局觀。會議中，主持人由不同疫情等級可能面臨的情境與難題，再由各單位運用內化的<strong>流程圖、地理動線圖</strong>來具體報告其應變SOP。會議中，進行即時協調，將抽象的文字轉化為具體的執行責任。</p>
+            </div>
+
+            <div class="critical-point">
+                <p>儘管本院文件已依循中央新興傳染病操作型定義，但管理者在面對疫情時，<strong>卻鮮少依循這些既定標準</strong>。反之，決策常受<strong>媒體報導或心中恐懼</strong>影響，導致指令頻繁變動。例如，在春節期間恣意召回感染管制人員，從事<strong>事倍功半</strong>的準備工作，其背後依據並非內部的疫情分級或動員層級，而是臨時的恐慌反應。</p>
+                
+                <p>相對於本院會議上念稿模式，雖然事先審核過各功能群組預先準備好的文字劇本。由於演習流於文稿的宣讀，與會人員僅熟悉自己單位的文字部分，未能建立跨部門對流程、動線的共同理解。這種脫節會使長官無法知道問題的癥結點，影響高層決策的有效性。  另外，缺乏 SOP 的落實與平時訓練是常態問題，導致實際疫情發生時，單位應變能力完全不足，例如<strong>駐警不會穿防護衣，因而害怕不願意協助病人動線分流之前導</strong>；眾多新任主管不清楚如何造冊，也只願意處理同職別人員範疇事務，推諉跨科部確實有共同空間工作的其他職別名冊等現象。 平時沒有落實SOP，疫情來襲單位在第一時間不知如何做，自然會有抗拒，需要<strong>感染管制中心全體同仁花費大量精力時間，逐一協助</strong>處理如暴露者造冊、同仁安置等本應由各單位執行的基礎事務。這種模式嚴重拖垮了感染管制中心應有的計畫與決策功能。</p>
+            </div>
+            </div>
+
+<h2>四、教育訓練成果之效益、應用於工作之計劃及改善建議</h2>
+
+        <button class="collapsible">✅ 行動追蹤板</button>
+        <div class="content"> 
+            <p>本觀摩成果的效益在於為本院疫災應變體系的流程轉型與責任釐清提供具體參考。應用於工作之計劃與改善建議：</p>
+            
+            <div id="progress-container">
+                <strong>行動方案落實進度：</strong> <span id="progress-text">0/5 (0%)</span>
+                <progress id="progress-bar" value="0" max="5"></progress>
+                
+                <ul id="action-list">
+                    <li class="action-item"><input type="checkbox" id="action1" onclick="updateProgress()"><label for="action1"><strong>(一)強化「準備期」資料整合與清晰度：</strong> 感染管制中心/計畫部需在桌上演習準備期間，提供淺白且整合的資料，特別是透過簡易精要的圖示，清楚呈現疫情分級、動員層級與對應的因應作為，作為各單位編寫自身劇本的共同基礎。此舉可確保單位的文稿能符合應變總綱，以免交上文稿被修整後仍不知修整的理由。</label></li>
+                    <li class="action-item"><input type="checkbox" id="action2" onclick="updateProgress()"><label for="action2"><strong>(二)落實常態訓練與整備：</strong> 強制各執行單位將 SOP 轉化為平時訓練(例如：需落實防護用具穿脫、病人動線分流演練。確保疫情發生時，單位能從「有基礎」的狀態啟動。</label></li>
+                    <li class="action-item"><input type="checkbox" id="action3" onclick="updateProgress()"><label for="action3"><strong>(三)強制視覺化呈現 SOP 與責任：</strong> 要求應變單位在簡報時，必須使用流程圖、動線圖或地理分布圖，將SOP具體化，且圖上必須明確標註「執行單位/負責人」。</label></li>
+                    <li class="action-item"><input type="checkbox" id="action4" onclick="updateProgress()"><label for="action4"><strong>(四)轉換演習焦點至「責任歸屬與協調需求」：</strong> 應強制單位針對「暴露者造冊、同仁安置」等實際容易發生推諉事項確認實際負責單位，並將重點放在單位提出的「執行上需要外部協調或支援的地方」。</label></li>
+                    <li class="action-item"><input type="checkbox" id="action5" onclick="updateProgress()"><label for="action5"><strong>(五)建立「協調需求追蹤機制」：</strong> 演習紀錄應獨立設立「待協調與待優化項目」清單，並追蹤其納入年度SOP修訂的進度，最終目標是：常態的藉由演習，熟稔應扮演的角色與職責，並提出執行上需要協調的地方，逐年優化流程。</label></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <h2>五、攜回資料名稱及內容、附件</h2>
+        <ul>
+            <li>會議中發送當期疫苗專刊，內容以平實口吻介紹相關實際情境案例，讓非醫療背景人員能容易了解，間接提升對疫苗接種的接受度。</li>
+        </ul>
+        
+
+    </div>
+<script>
+
+
+ // 1. 內容收合/展開功能 (Accordion)
+        var coll = document.getElementsByClassName("collapsible");
+for (let i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            // 點擊展開時，確保 max-height 足夠容納內容
+            content.style.maxHeight = content.scrollHeight + 30 + "px"; // 增加一點餘裕
+        } 
+    });
+}
+
+// 2. 行動方案進度追蹤器 (Progress Tracker) - 確保函數完整且正確
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('#action-list input[type="checkbox"]');
+            const total = 5; 
+            let checkedCount = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checkedCount++;
+                }
+            });
+            
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            // 更新進度條和文字顯示
+            document.getElementById('progress-bar').value = checkedCount;
+            document.getElementById('progress-bar').max = total; // 確保 max 值正確
+            document.getElementById('progress-text').textContent = `${checkedCount}/${total} (${percentage}%)`;
+            
+            // 紀錄進度到 localStorage，讓下次打開網頁時能保留
+            localStorage.setItem('actionProgress', Array.from(checkboxes).map(cb => cb.checked));
+        }
+        
+        // 頁面加載時先執行一次，設定初始狀態並從 localStorage 恢復進度
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 恢復進度
+            const savedProgress = localStorage.getItem('actionProgress');
+            if (savedProgress) {
+                const checkboxes = document.querySelectorAll('#action-list input[type="checkbox"]');
+                const states = savedProgress.split(',').map(s => s === 'true');
+                checkboxes.forEach((cb, index) => {
+                    // 只有當狀態存在且為 true 時才勾選
+                    if (index < states.length) {
+                        cb.checked = states[index];
+                    }
+                });
+            }
+            // 無論是否恢復進度，都要呼叫一次來更新顯示
+            updateProgress();
+        });
+    </script>
+
+<footer class="image-footer">
+        <h3>觀摩活動合影</h3>
+        <img src="S__153493522.jpg" alt="觀摩活動團體合影">
+    </footer>
+</body>
+</html>
